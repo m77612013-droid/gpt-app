@@ -1,0 +1,11 @@
+{
+  "framework": "nextjs",
+  "buildCommand": "next build",
+  "outputDirectory": ".next",
+  "installCommand": "npm install",
+  "devCommand": "next dev",
+  "functions": {
+    "app/api/postback/route.ts": { "maxDuration": 10 },
+    "app/api/postback/monlix/route.ts": { "maxDuration": 10 }
+  }
+}

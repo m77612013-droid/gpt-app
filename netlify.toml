@@ -1,0 +1,17 @@
+# This project is deployed on Vercel.
+# netlify.toml kept for reference only — not used in production.
+
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NEXT_TELEMETRY_DISABLED = "1"
+  NODE_VERSION            = "20"
+  TURBOPACK               = "0"
+
+[functions]
+  node_bundler = "esbuild"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
