@@ -96,13 +96,15 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "Invalid user_id format." }, { status: 400 });
   }
 
-  const pointsEarned = parseFloat(payoutRaw);
-  if (isNaN(pointsEarned) || pointsEarned <= 0 || pointsEarned > 1_000_000) {
+  const payoutFloat = parseFloat(payoutRaw);
+  if (isNaN(payoutFloat) || payoutFloat <= 0 || payoutFloat > 1_000) {
     return NextResponse.json(
-      { error: "payout_amount must be a positive number (max 1,000,000)." },
+      { error: "payout_amount must be a positive number (max 1,000)." },
       { status: 400 }
     );
   }
+  // Convert dollar payout → points (1$ = 1000 points)
+  const pointsEarned = Math.round(payoutFloat * 1000);
 
   // ── 3. Atomic credit via Postgres RPC (no race condition) ────────────────
   const adminClient = createAdminClient();
@@ -134,19 +136,10 @@ export async function GET(request: NextRequest) {
   }
 
   if (result.duplicate) {
-    return NextResponse.json(
-      { success: true, message: "Already processed (duplicate)." },
-      { status: 200 }
-    );
+    // Return "1" so CPAGrip marks the conversion as Success (idempotent)
+    return new NextResponse("1", { status: 200, headers: { "Content-Type": "text/plain" } });
   }
 
-  return NextResponse.json(
-    {
-      success:      true,
-      message:      `Credited ${pointsEarned} points to user ${userId}.`,
-      new_balance:  result.new_balance,
-      total_earned: result.total_earned,
-    },
-    { status: 200 }
-  );
+  // CPAGrip (and most CPA networks) require a plain "1" response to confirm success
+  return new NextResponse("1", { status: 200, headers: { "Content-Type": "text/plain" } });
 }
