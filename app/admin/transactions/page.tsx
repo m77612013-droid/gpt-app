@@ -15,9 +15,10 @@ export default async function AdminTransactionsPage() {
   const admin = createAdminClient();
 
   // Fetch last 50 transactions with user email
+  // Note: provider and transaction_id columns may not exist in older schema versions
   const { data: transactions, error } = await admin
     .from("transactions")
-    .select("id, user_id, offer_name, points_earned, provider, transaction_id, status, created_at, profiles(email)")
+    .select("id, user_id, offer_name, points_earned, status, created_at, profiles(email)")
     .order("created_at", { ascending: false })
     .limit(50);
 
@@ -53,10 +54,8 @@ export default async function AdminTransactionsPage() {
                   <th className="px-4 py-3 text-right">التاريخ</th>
                   <th className="px-4 py-3 text-right">المستخدم</th>
                   <th className="px-4 py-3 text-right">العرض</th>
-                  <th className="px-4 py-3 text-right">المزود</th>
                   <th className="px-4 py-3 text-right">النقاط</th>
                   <th className="px-4 py-3 text-right">الحالة</th>
-                  <th className="px-4 py-3 text-right">TX ID</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-700/30">
@@ -83,11 +82,6 @@ export default async function AdminTransactionsPage() {
                       <td className="px-4 py-3 text-white max-w-[160px] truncate">
                         {tx.offer_name}
                       </td>
-                      <td className="px-4 py-3">
-                        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-blue-500/15 text-blue-300 border border-blue-500/25">
-                          {tx.provider}
-                        </span>
-                      </td>
                       <td className="px-4 py-3 text-emerald-400 font-bold text-right">
                         +{tx.points_earned.toLocaleString()}
                       </td>
@@ -101,9 +95,6 @@ export default async function AdminTransactionsPage() {
                         }`}>
                           {tx.status === "completed" ? "مكتمل" : tx.status === "pending" ? "معلق" : "مرفوض"}
                         </span>
-                      </td>
-                      <td className="px-4 py-3 text-slate-500 font-mono text-[10px] max-w-[120px] truncate">
-                        {tx.transaction_id ?? "—"}
                       </td>
                     </tr>
                   );
