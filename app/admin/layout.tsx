@@ -6,10 +6,11 @@ import { useState } from "react";
 import { Menu, X } from "lucide-react";
 
 const ADMIN_NAV = [
-  { href: "/admin",             label: "نظرة عامة",       icon: "📊" },
-  { href: "/admin/users",        label: "المستخدمون",       icon: "👥" },
-  { href: "/admin/withdrawals",  label: "طلبات السحب",    icon: "💸" },
-  { href: "/admin/offerwalls",   label: "إعدادات العروض", icon: "⚙️" },
+  { href: "/admin",                  label: "نظرة عامة",       icon: "📊" },
+  { href: "/admin/users",            label: "المستخدمون",       icon: "👥" },
+  { href: "/admin/withdrawals",      label: "طلبات السحب",    icon: "💸" },
+  { href: "/admin/transactions",     label: "سجل العمليات",   icon: "📋" },
+  { href: "/admin/offerwalls",       label: "إعدادات العروض", icon: "⚙️" },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
