@@ -235,8 +235,8 @@ export default function OffersClient({
             </div>
 
             {/* Content — iframe or CPAGrip offerwall panel */}
-            {activeOffer.scriptId ? (
-              /* CPAGrip: full offerwall embedded via iframe, subid=userId for postback */
+            {(activeOffer.id === "cpagrip" || activeOffer.scriptId) ? (
+              /* CPAGrip: opens direct offer wall link with userId for postback tracking */
               <CPAGripPanel
                 scriptId={activeOffer.scriptId}
                 userId={userId}
@@ -273,8 +273,8 @@ export default function OffersClient({
 function OfferCard({ offer, onOpen }: { offer: Offer; onOpen: () => void }) {
   const Icon = offer.icon;
   const badge = offer.badge;
-  // Card is active when either an iframe URL or a script ID is configured
-  const isReady = Boolean(offer.iframeUrl) || Boolean(offer.scriptId);
+  // Card is active when either an iframe URL, a script ID, or cpagrip (uses built-in URL)
+  const isReady = Boolean(offer.iframeUrl) || Boolean(offer.scriptId) || offer.id === "cpagrip";
 
   return (
     <div
@@ -327,12 +327,12 @@ function OfferCard({ offer, onOpen }: { offer: Offer; onOpen: () => void }) {
           <span
             className={`text-sm font-bold ${offer.iconColor} group-hover:gap-2 flex items-center gap-1 transition-all duration-200`}
           >
-            ابدأ الآن
+            ابدأ الربح الآن
             <span className="inline-block group-hover:translate-x-1 transition-transform duration-200">←</span>
           </span>
         ) : (
           <span className="text-xs font-semibold text-slate-500 bg-slate-800/60 border border-slate-700/40 px-3 py-1.5 rounded-full">
-            قريباً •••
+            قريباً
           </span>
         )}
       </div>
