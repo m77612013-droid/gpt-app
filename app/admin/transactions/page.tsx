@@ -1,14 +1,16 @@
 import { createAdminClient } from "@/lib/supabase";
 import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase-server";
+import { createSupabaseServerClient } from "@/lib/supabase-server";
 
 export const dynamic = "force-dynamic";
 
+const ADMIN_EMAIL = "aboutgamaa@gmail.com";
+
 export default async function AdminTransactionsPage() {
   // Auth guard
-  const supabase = await createClient();
+  const supabase = await createSupabaseServerClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
+  if (user?.email !== ADMIN_EMAIL) redirect("/");
 
   const admin = createAdminClient();
 
