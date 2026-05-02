@@ -1,6 +1,6 @@
 ﻿"use client";
 
-const OFFERS_URL = "https://singingfiles.com/1893832";
+const BASE_OFFERS_URL = "https://singingfiles.com/1893832";
 
 interface Props {
   scriptId?: string;
@@ -8,7 +8,12 @@ interface Props {
   iframeKey?: number;
 }
 
-export default function CPAGripPanel({ }: Props) {
+export default function CPAGripPanel({ userId }: Props) {
+  // Append user_id so CPAGrip postback knows who to credit
+  const offersUrl = userId
+    ? `${BASE_OFFERS_URL}?u=${encodeURIComponent(userId)}`
+    : BASE_OFFERS_URL;
+
   return (
     <div className="flex-1 w-full flex flex-col items-center justify-center gap-8 px-6 py-12 text-center bg-slate-950">
 
@@ -32,7 +37,7 @@ export default function CPAGripPanel({ }: Props) {
 
       {/* CTA Button */}
       <button
-        onClick={() => window.open(OFFERS_URL, "_blank", "noopener,noreferrer")}
+        onClick={() => window.open(offersUrl, "_blank", "noopener,noreferrer")}
         className="group relative inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-blue-600 hover:bg-blue-500 active:scale-95 text-white font-bold text-lg shadow-lg shadow-blue-600/30 hover:shadow-blue-500/40 transition-all duration-200"
       >
         <svg className="w-6 h-6 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
