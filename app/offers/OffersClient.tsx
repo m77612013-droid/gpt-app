@@ -33,6 +33,7 @@ interface Offer {
   badge?: { label: string; type: "trending" | "highpaying" | "new" | "hot" };
   iframeUrl: string;        // iframe-based offerwalls
   scriptId?: string;        // script-based offerwalls (e.g. CPAGrip)
+  comingSoon?: boolean;     // hides provider details and disables the card
 }
 
 type BadgeType = NonNullable<Offer["badge"]>["type"];
@@ -77,70 +78,7 @@ export default function OffersClient({
   const [iframeKey,   setIframeKey]   = useState(0); // used to force reload
 
   const OFFERS: Offer[] = [
-    {
-      id: "monlix",
-      provider: "Monlix",
-      title: "استطلاعات عالية المكافأة",
-      desc: "أكمل استطلاعات مدفوعة من كبرى الشركات العالمية واحصل على أعلى الأرباح فوراً.",
-      icon: ClipboardList,
-      gradient: "from-violet-500/30 to-purple-500/10 border-violet-500/40",
-      iconGlow:  "bg-violet-500/20",
-      iconColor: "text-violet-300",
-      maxPoints: "حتى 500 نقطة",
-      badge: { label: "الأعلى ربحاً", type: "highpaying" },
-      iframeUrl: monlixUrl,
-    },
-    {
-      id: "cpalead",
-      provider: "CPALead",
-      title: "تثبيت التطبيقات",
-      desc: "حمّل تطبيقات مجانية وافتحها مرة واحدة فقط — النقاط تُضاف خلال ثوانٍ.",
-      icon: Smartphone,
-      gradient: "from-sky-500/30 to-blue-500/10 border-sky-500/40",
-      iconGlow:  "bg-sky-500/20",
-      iconColor: "text-sky-300",
-      maxPoints: "حتى 300 نقطة",
-      badge: { label: "رائج الآن", type: "trending" },
-      iframeUrl: cpalUrl,
-    },
-    {
-      id: "adgate",
-      provider: "AdGate Rewards",
-      title: "مهام سريعة",
-      desc: "أكمل مهام تستغرق أقل من دقيقة — اشتراكات، استطلاعات، وألعاب خفيفة.",
-      icon: Zap,
-      gradient: "from-amber-500/30 to-orange-500/10 border-amber-500/40",
-      iconGlow:  "bg-amber-500/20",
-      iconColor: "text-amber-300",
-      maxPoints: "حتى 200 نقطة",
-      badge: { label: "ساخن 🔥", type: "hot" },
-      iframeUrl: adgateUrl,
-    },
-    {
-      id: "lootably",
-      provider: "Lootably",
-      title: "العب واكسب",
-      desc: "العب ألعاباً مجانية وابلغ مستويات محددة لتجمع نقاطك تلقائياً.",
-      icon: Gamepad2,
-      gradient: "from-emerald-500/30 to-green-500/10 border-emerald-500/40",
-      iconGlow:  "bg-emerald-500/20",
-      iconColor: "text-emerald-300",
-      maxPoints: "حتى 450 نقطة",
-      badge: { label: "جديد", type: "new" },
-      iframeUrl: lootablyUrl,
-    },
-    {
-      id: "adscend",
-      provider: "AdscendMedia",
-      title: "شاهد واكسب",
-      desc: "شاهد مقاطع إعلانية قصيرة ومحتوى ترفيهي واجمع نقاطك دون أي تسجيل.",
-      icon: Play,
-      gradient: "from-rose-500/30 to-pink-500/10 border-rose-500/40",
-      iconGlow:  "bg-rose-500/20",
-      iconColor: "text-rose-300",
-      maxPoints: "حتى 150 نقطة",
-      iframeUrl: adscendUrl,
-    },
+    // ── Active providers ────────────────────────────────────────────────────
     {
       id: "cpagrip",
       provider: "CPAGrip",
@@ -167,6 +105,48 @@ export default function OffersClient({
       maxPoints: "حتى 400 نقطة",
       badge: { label: "جديد", type: "new" },
       iframeUrl: adgemUrl,
+    },
+
+    // ── Coming soon placeholders (anonymous, non-clickable) ─────────────────
+    {
+      id: "placeholder-1",
+      provider: "", title: "", desc: "",
+      icon: ClipboardList,
+      gradient: "from-slate-700/20 to-slate-800/10 border-slate-700/30",
+      iconGlow: "bg-slate-700/30", iconColor: "text-slate-600",
+      maxPoints: "—", iframeUrl: "", comingSoon: true,
+    },
+    {
+      id: "placeholder-2",
+      provider: "", title: "", desc: "",
+      icon: Smartphone,
+      gradient: "from-slate-700/20 to-slate-800/10 border-slate-700/30",
+      iconGlow: "bg-slate-700/30", iconColor: "text-slate-600",
+      maxPoints: "—", iframeUrl: "", comingSoon: true,
+    },
+    {
+      id: "placeholder-3",
+      provider: "", title: "", desc: "",
+      icon: Gamepad2,
+      gradient: "from-slate-700/20 to-slate-800/10 border-slate-700/30",
+      iconGlow: "bg-slate-700/30", iconColor: "text-slate-600",
+      maxPoints: "—", iframeUrl: "", comingSoon: true,
+    },
+    {
+      id: "placeholder-4",
+      provider: "", title: "", desc: "",
+      icon: Play,
+      gradient: "from-slate-700/20 to-slate-800/10 border-slate-700/30",
+      iconGlow: "bg-slate-700/30", iconColor: "text-slate-600",
+      maxPoints: "—", iframeUrl: "", comingSoon: true,
+    },
+    {
+      id: "placeholder-5",
+      provider: "", title: "", desc: "",
+      icon: TrendingUp,
+      gradient: "from-slate-700/20 to-slate-800/10 border-slate-700/30",
+      iconGlow: "bg-slate-700/30", iconColor: "text-slate-600",
+      maxPoints: "—", iframeUrl: "", comingSoon: true,
     },
   ];
 
@@ -288,17 +268,52 @@ export default function OffersClient({
 function OfferCard({ offer, onOpen }: { offer: Offer; onOpen: () => void }) {
   const Icon = offer.icon;
   const badge = offer.badge;
-  // Card is active when either an iframe URL, a script ID, or cpagrip (uses built-in URL)
-  const isReady = Boolean(offer.iframeUrl) || Boolean(offer.scriptId) || offer.id === "cpagrip";
+  const isActive = !offer.comingSoon &&
+    (Boolean(offer.iframeUrl) || Boolean(offer.scriptId) || offer.id === "cpagrip");
 
+  // ── Coming-soon anonymous placeholder ──────────────────────────────────────
+  if (offer.comingSoon) {
+    return (
+      <div className="relative bg-gradient-to-br from-slate-800/30 to-slate-900/20 border border-slate-700/25 rounded-2xl p-5 flex flex-col gap-4 overflow-hidden min-h-[180px] sm:min-h-0 cursor-not-allowed select-none">
+        {/* Anonymous icon */}
+        <div className="flex items-start justify-between gap-2">
+          <div className="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 bg-slate-700/30 ring-1 ring-white/5">
+            <Icon className="w-6 h-6 text-slate-700" strokeWidth={1.75} />
+          </div>
+          <span className="inline-flex items-center gap-1.5 text-[11px] font-bold px-2.5 py-1 rounded-full border bg-slate-700/30 text-slate-500 border-slate-600/30 leading-none">
+            قريباً
+          </span>
+        </div>
+
+        {/* Redacted body lines */}
+        <div className="flex-1 flex flex-col justify-center gap-2.5">
+          <div className="h-3 w-3/4 rounded-full bg-slate-700/50" />
+          <div className="h-2.5 w-full rounded-full bg-slate-800/60" />
+          <div className="h-2.5 w-5/6 rounded-full bg-slate-800/60" />
+        </div>
+
+        {/* Footer */}
+        <div className="flex items-center justify-between gap-3">
+          <span className="text-xs font-semibold text-slate-600 bg-slate-800/50 border border-slate-700/30 px-3 py-1.5 rounded-full">
+            شبكة قادمة
+          </span>
+          <span className="text-xs font-semibold text-slate-600 bg-slate-800/40 border border-slate-700/30 px-3 py-1.5 rounded-full">
+            قريباً
+          </span>
+        </div>
+      </div>
+    );
+  }
+
+  // ── Active offer card ───────────────────────────────────────────────────────
   return (
     <div
       className={`group relative bg-gradient-to-br ${offer.gradient} backdrop-blur-md border rounded-2xl p-5 flex flex-col gap-4 transition-all duration-300 overflow-hidden min-h-[180px] sm:min-h-0
-        ${isReady
+        ${isActive
           ? "cursor-pointer hover:-translate-y-1.5 hover:shadow-2xl active:scale-[0.98]"
           : "opacity-50 cursor-not-allowed"
         }`}
-      onClick={isReady ? onOpen : undefined}
+      onClick={isActive ? onOpen : undefined}
     >
       {/* Top shimmer line on hover */}
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -338,7 +353,7 @@ function OfferCard({ offer, onOpen }: { offer: Offer; onOpen: () => void }) {
         <span className="text-xs font-semibold text-slate-300 bg-white/5 border border-white/10 px-3 py-1.5 rounded-full">
           {offer.maxPoints}
         </span>
-        {isReady ? (
+        {isActive ? (
           <span
             className={`text-sm font-bold ${offer.iconColor} group-hover:gap-2 flex items-center gap-1 transition-all duration-200 sm:bg-transparent bg-white/10 sm:px-0 px-3 py-2 rounded-xl sm:rounded-none sm:py-0`}
           >
