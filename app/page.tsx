@@ -10,7 +10,6 @@ import {
   Gamepad2,
   Play,
   Zap,
-  Gift,
   ArrowLeft,
 } from "lucide-react";
 
@@ -33,13 +32,34 @@ function PaymentCard({ method }: { method: PaymentMethod }) {
 }
 
 export default function Home() {
-  const previewMethods = [
-    { icon: ClipboardList, label: "Monlix",       title: "استطلاعات عالية المكافأة", points: "500", color: "text-violet-400", bg: "bg-violet-500/15", border: "border-violet-500/30" },
-    { icon: Smartphone,   label: "CPALead",       title: "تثبيت التطبيقات",          points: "300", color: "text-sky-400",    bg: "bg-sky-500/15",    border: "border-sky-500/30"    },
-    { icon: Zap,          label: "AdGate",         title: "مهام سريعة",               points: "200", color: "text-amber-400", bg: "bg-amber-500/15",  border: "border-amber-500/30"  },
-    { icon: Gamepad2,     label: "Lootably",       title: "العب واكسب",               points: "450", color: "text-emerald-400",bg:"bg-emerald-500/15",border: "border-emerald-500/30"},
-    { icon: Play,         label: "AdscendMedia",   title: "شاهد واكسب",               points: "150", color: "text-rose-400",  bg: "bg-rose-500/15",   border: "border-rose-500/30"   },
-    { icon: Gift,         label: "CPAGrip",        title: "عروض متنوعة عالية الربح",  points: "600", color: "text-blue-400",  bg: "bg-blue-500/15",   border: "border-blue-500/30"   },
+  // ── Active offer networks ────────────────────────────────────────────────
+  const activeOffers = [
+    {
+      icon: Zap,
+      label: "CPAGrip",
+      title: "عروض متنوعة عالية الربح",
+      desc: "تثبيت تطبيقات، استطلاعات، واشتراكات بمكافآت ضخمة.",
+      points: "600",
+      color: "text-blue-400",
+      bg: "bg-blue-500/15",
+      border: "border-blue-500/30",
+      glow: "shadow-blue-500/20",
+      badge: "الأعلى ربحاً ⭐",
+      badgeColor: "text-amber-300 border-amber-500/30 bg-amber-500/10",
+    },
+    {
+      icon: Zap,
+      label: "AdGem",
+      title: "عروض AdGem المتنوعة",
+      desc: "عروض وتطبيقات واستطلاعات — نقاطك تُضاف فوراً بعد التحقق.",
+      points: "400",
+      color: "text-cyan-400",
+      bg: "bg-cyan-500/15",
+      border: "border-cyan-500/30",
+      glow: "shadow-cyan-500/20",
+      badge: "جديد ✦",
+      badgeColor: "text-cyan-300 border-cyan-500/30 bg-cyan-500/10",
+    },
   ];
 
   const paymentMethods: PaymentMethod[] = [
@@ -135,40 +155,95 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Preview cards grid — click locks to /offers */}
+        {/* Preview cards grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {previewMethods.map((m) => {
+
+          {/* ── Active networks ── */}
+          {activeOffers.map((m) => {
             const Icon = m.icon;
             return (
               <Link
                 key={m.label}
                 href="/offers"
-                className={`group relative bg-white/[0.03] backdrop-blur-md border ${m.border} rounded-2xl p-5 flex flex-col gap-4 hover:-translate-y-1.5 hover:shadow-2xl transition-all duration-300 overflow-hidden cursor-pointer`}
+                className={`group relative bg-white/[0.04] backdrop-blur-md border ${m.border} rounded-2xl p-5 flex flex-col gap-4 hover:-translate-y-1.5 hover:shadow-2xl ${m.glow} transition-all duration-300 overflow-hidden cursor-pointer`}
               >
                 {/* shimmer top line */}
-                <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                {/* inner glow */}
+                <div className="absolute inset-0 rounded-2xl bg-white/[0.02] opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
 
-                <div className="flex items-start justify-between gap-2">
-                  <div className={`w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 ${m.bg}`}>
+                <div className="flex items-start justify-between gap-2 relative">
+                  <div className={`w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 ${m.bg} ring-1 ring-white/10`}>
                     <Icon className={`w-5 h-5 ${m.color}`} strokeWidth={1.75} />
                   </div>
-                  <span className={`text-[11px] font-bold px-2.5 py-1 rounded-full border ${m.border} ${m.bg} ${m.color} leading-none mt-0.5 shrink-0`}>
-                    حتى {m.points} نقطة
+                  <span className={`text-[11px] font-bold px-2.5 py-1 rounded-full border ${m.badgeColor} leading-none mt-0.5 shrink-0`}>
+                    {m.badge}
                   </span>
                 </div>
 
-                <div className="flex-1">
+                <div className="flex-1 relative">
                   <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1">{m.label}</p>
-                  <h3 className="font-bold text-white text-base leading-snug">{m.title}</h3>
+                  <h3 className="font-bold text-white text-base leading-snug mb-1">{m.title}</h3>
+                  <p className="text-xs text-slate-400 leading-relaxed">{m.desc}</p>
                 </div>
 
-                <span className={`text-sm font-bold ${m.color} flex items-center gap-1 group-hover:gap-2 transition-all duration-200`}>
-                  ابدأ الآن
-                  <ArrowLeft className="w-3.5 h-3.5 group-hover:-translate-x-1 transition-transform duration-200" />
-                </span>
+                <div className="flex items-center justify-between relative">
+                  <span className={`text-xs font-semibold ${m.bg} border ${m.border} ${m.color} px-3 py-1.5 rounded-full`}>
+                    حتى {m.points} نقطة
+                  </span>
+                  <span className={`text-sm font-bold ${m.color} flex items-center gap-1 group-hover:gap-2 transition-all duration-200`}>
+                    ابدأ الآن
+                    <ArrowLeft className="w-3.5 h-3.5 group-hover:-translate-x-1 transition-transform duration-200" />
+                  </span>
+                </div>
               </Link>
             );
           })}
+
+          {/* ── Coming-soon anonymous premium slots ── */}
+          {[
+            { icon: ClipboardList },
+            { icon: Smartphone   },
+            { icon: Gamepad2     },
+            { icon: Play         },
+          ].map(({ icon: Icon }, i) => (
+            <div
+              key={`placeholder-${i}`}
+              className="relative bg-gradient-to-br from-slate-800/25 to-slate-900/15 border border-slate-700/25 rounded-2xl p-5 flex flex-col gap-4 overflow-hidden cursor-not-allowed select-none"
+            >
+              {/* Noise texture overlay */}
+              <div className="absolute inset-0 rounded-2xl opacity-[0.03] bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJub2lzZSI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9IjAuNjUiIG51bU9jdGF2ZXM9IjMiIHN0aXRjaFRpbGVzPSJzdGl0Y2giLz48ZmVDb2xvck1hdHJpeCB0eXBlPSJzYXR1cmF0ZSIgdmFsdWVzPSIwIi8+PC9maWx0ZXI+PHJlY3Qgd2lkdGg9IjMwMCIgaGVpZ2h0PSIzMDAiIGZpbHRlcj0idXJsKCNub2lzZSkiIG9wYWNpdHk9IjEiLz48L3N2Zz4=')]" />
+
+              {/* Header */}
+              <div className="flex items-start justify-between gap-2">
+                <div className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 bg-slate-700/30 ring-1 ring-white/5">
+                  <Icon className="w-5 h-5 text-slate-700" strokeWidth={1.75} />
+                </div>
+                <span className="text-[11px] font-bold px-2.5 py-1 rounded-full border bg-slate-700/20 text-slate-500 border-slate-600/25 leading-none mt-0.5 shrink-0">
+                  قريباً
+                </span>
+              </div>
+
+              {/* Skeleton lines */}
+              <div className="flex-1 flex flex-col gap-2.5 justify-center">
+                <div className="h-2.5 w-1/3 rounded-full bg-slate-700/40" />
+                <div className="h-3.5 w-4/5 rounded-full bg-slate-700/50" />
+                <div className="h-2.5 w-full rounded-full bg-slate-800/50" />
+                <div className="h-2.5 w-2/3 rounded-full bg-slate-800/40" />
+              </div>
+
+              {/* Footer */}
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-semibold text-slate-600 bg-slate-800/40 border border-slate-700/25 px-3 py-1.5 rounded-full">
+                  شبكة مميزة قريباً
+                </span>
+                <span className="text-xs font-semibold text-slate-600 bg-slate-800/30 border border-slate-700/25 px-3 py-1.5 rounded-full">
+                  Premium
+                </span>
+              </div>
+            </div>
+          ))}
+
         </div>
 
         {/* CTA banner */}
