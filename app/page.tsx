@@ -61,15 +61,6 @@ export default function Home() {
 
       <div className="relative z-10 flex flex-col items-center gap-14 sm:gap-20 lg:gap-24 w-full">
 
-      {/* ── Nav ── */}
-      <nav className="w-full max-w-5xl flex items-center justify-between">
-        <LogoBrand size="md" />
-        <div className="flex items-center gap-2 sm:gap-3">
-          <a href="/login" className="text-sm text-slate-400 hover:text-white transition-colors px-3 sm:px-4 py-2">تسجيل الدخول</a>
-          <a href="/register" className="text-sm font-semibold bg-blue-600 hover:bg-blue-500 text-white px-4 sm:px-5 py-2 rounded-xl shadow-lg shadow-blue-500/20 transition-all duration-200 active:scale-95">ابدأ مجاناً</a>
-        </div>
-      </nav>
-
       {/* ── Hero ── */}
       <ScrollReveal direction="up" duration={0.8} className="w-full flex justify-center">
       <section className="text-center max-w-2xl w-full">
@@ -85,7 +76,7 @@ export default function Home() {
         </p>
         <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
           <a
-            href="/register"
+            href="/offers"
             className="inline-flex items-center justify-center rounded-xl bg-blue-600 hover:bg-blue-500 px-8 py-3.5 text-white font-semibold shadow-lg shadow-blue-500/25 active:scale-95 transition-all duration-200"
           >
             ابدأ الآن — مجاناً ✦
@@ -191,10 +182,10 @@ export default function Home() {
           </div>
           <div className="relative flex gap-3 shrink-0">
             <Link
-              href="/register"
+              href="/offers"
               className="inline-flex items-center justify-center rounded-xl bg-blue-600 hover:bg-blue-500 px-6 py-2.5 text-white font-semibold text-sm shadow-lg shadow-blue-500/25 active:scale-95 transition-all duration-200"
             >
-              سجّل مجاناً ✦
+              ابدأ الآن ✦
             </Link>
             <Link
               href="/offers"
@@ -248,16 +239,6 @@ export default function Home() {
         </div>
       </section>
       </ScrollReveal>
-
-      {/* ── Footer ── */}
-      <footer className="w-full max-w-3xl border-t border-white/5 pt-8 pb-4 flex flex-col items-center gap-3">
-        <div className="flex items-center gap-5 text-xs text-slate-500">
-          <a href="/terms"   className="hover:text-slate-300 transition-colors">شروط الاستخدام</a>
-          <a href="/privacy" className="hover:text-slate-300 transition-colors">سياسة الخصوصية</a>
-          <a href="/contact" className="hover:text-slate-300 transition-colors">اتصل بنا</a>
-        </div>
-        <p className="text-xs text-slate-600">© {new Date().getFullYear()} جنى JANA · جميع الحقوق محفوظة</p>
-      </footer>
 
       </div>
     </main>

@@ -29,7 +29,7 @@ function GitHubIcon() {
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirectTo = searchParams.get("redirect") ?? "/dashboard";
+  const redirectTo = searchParams.get("redirect") ?? "/offers";
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -43,7 +43,7 @@ function LoginForm() {
     setOauthLoading(provider);
     const { error } = await supabase.auth.signInWithOAuth({
       provider,
-      options: { redirectTo: `${window.location.origin}/dashboard` },
+      options: { redirectTo: `${window.location.origin}/offers` },
     });
     if (error) {
       setError("حدث خطأ أثناء تسجيل الدخول. حاول مجدداً.");

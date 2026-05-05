@@ -3,7 +3,8 @@ import { createSupabaseServerClient } from "@/lib/supabase-server";
 import { redirect } from "next/navigation";
 import EditBalanceForm from "./EditBalanceForm";
 
-const ADMIN_EMAIL = "aboutgamaa@gmail.com";
+// Reads from ADMIN_EMAIL env var (set in Vercel Dashboard / .env.local)
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? "aboutgamaa@gmail.com";
 
 interface Profile {
   id: string;

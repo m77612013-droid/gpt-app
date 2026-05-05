@@ -67,7 +67,7 @@ export default function RegisterPage() {
     const { error } = await supabase.auth.signInWithOAuth({
       provider,
       options: {
-        redirectTo: `${window.location.origin}/dashboard`,
+        redirectTo: `${window.location.origin}/offers`,
       },
     });
     if (error) {
@@ -98,7 +98,7 @@ export default function RegisterPage() {
 
     setSuccess(true);
     // Redirect after a brief confirmation display
-    setTimeout(() => router.push("/dashboard"), 2000);
+    setTimeout(() => router.push("/offers"), 2000);
   }
 
   const anyLoading = loading || oauthLoading !== null;

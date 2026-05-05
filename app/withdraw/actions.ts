@@ -19,7 +19,7 @@ import { createSupabaseServerClient } from "@/lib/supabase-server";
 import { createAdminClient } from "@/lib/supabase";
 import { revalidatePath } from "next/cache";
 
-const MIN_POINTS = 500;
+const MIN_POINTS = 100;
 const MAX_POINTS = 1_000_000;
 
 const ALLOWED_METHODS = [

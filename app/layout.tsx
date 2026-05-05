@@ -4,6 +4,8 @@ import "./globals.css";
 import SmoothScrollProvider from "./components/SmoothScrollProvider";
 import ToastProvider from "./components/ToastProvider";
 import CookieBanner from "./components/CookieBanner";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
 
 const amiri = Amiri({
   weight: ["400", "700"],
@@ -38,7 +40,9 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-slate-950 text-white font-[family-name:var(--font-tajawal)] scrollbar-thin scrollbar-track-slate-950 scrollbar-thumb-slate-700">
         <ToastProvider>
+          <Header />
           <SmoothScrollProvider>{children}</SmoothScrollProvider>
+          <Footer />
           <CookieBanner />
         </ToastProvider>
       </body>

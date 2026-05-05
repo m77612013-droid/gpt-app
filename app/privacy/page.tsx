@@ -1,18 +1,10 @@
 import Link from "next/link";
-import LogoBrand from "@/app/components/LogoBrand";
 
 export const metadata = { title: "سياسة الخصوصية | جنى" };
 
 export default function PrivacyPage() {
   return (
     <main className="min-h-screen bg-slate-950 text-white">
-      {/* Nav */}
-      <nav className="bg-white/[0.04] backdrop-blur-md border-b border-white/[0.07] sticky top-0 z-20">
-        <div className="max-w-3xl mx-auto px-4 h-14 flex items-center justify-between">
-          <Link href="/"><LogoBrand size="sm" /></Link>
-          <Link href="/" className="text-sm text-slate-400 hover:text-white transition-colors">← الرئيسية</Link>
-        </div>
-      </nav>
 
       <div className="max-w-3xl mx-auto px-4 py-14">
         <h1 className="text-2xl font-bold mb-2">سياسة الخصوصية</h1>
@@ -39,10 +31,15 @@ export default function PrivacyPage() {
         <Section title="3. مشاركة المعلومات">
           <p>لا نبيع معلوماتك الشخصية لأي طرف ثالث. نشارك البيانات الضرورية فقط مع:</p>
           <ul className="list-disc list-inside mt-2 space-y-1">
-            <li><strong>موردي العروض</strong> (Monlix, CPALead, إلخ): معرّف المستخدم فقط لتتبع المكافآت.</li>
+            <li><strong>موردي العروض</strong> (Monlix, CPALead, AdGate, Lootably, AdscendMedia, CPAGrip): معرّف المستخدم فقط (Sub-ID) لتتبع المكافآت — لا يُشارك اسمك أو بريدك مع هذه الشبكات.</li>
             <li><strong>Supabase</strong>: مزود البنية التحتية للبيانات — تنطبق عليهم سياسة الخصوصية الخاصة بهم.</li>
+            <li><strong>Vercel</strong>: مزود استضافة الخدمة — لا يخزّن بيانات شخصية.</li>
             <li><strong>الجهات القانونية</strong>: عند الاقتضاء القانوني فقط.</li>
           </ul>
+        </Section>
+
+        <Section title="3أ. الإعلانات وشبكات العروض الخارجية">
+          <p>تعرض منصتنا محتوى من شبكات إعلانية خارجية. هذه الشبكات قد تستخدم تقنيات تتبع خاصة بها. نحن لا نتحكم في سياسات خصوصية هذه الشبكات ونوصي بمراجعتها مستقلاً.</p>
         </Section>
 
         <Section title="4. أمان البيانات">

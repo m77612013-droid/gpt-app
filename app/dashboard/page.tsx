@@ -1,15 +1,18 @@
 import { redirect } from "next/navigation";
 import { createSupabaseServerClient } from "@/lib/supabase-server";
+import { createAdminClient } from "@/lib/supabase";
 import LogoBrand from "@/app/components/LogoBrand";
+import BalanceCard from "./BalanceCard";
 import {
   TrendingUp,
   Clock,
   CheckCircle2,
   XCircle,
-  LogOut,
-  Wallet,
 } from "lucide-react";
 import Link from "next/link";
+
+// Force fresh data on every request — never cache this page
+export const dynamic = "force-dynamic";
 
 // ── Types ────────────────────────────────────────────────────────────────────
 interface Transaction {
@@ -61,14 +64,9 @@ export default async function DashboardPage() {
 
   if (!user) redirect("/login");
 
-  // Fetch profile
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("full_name, balance_points, total_earned")
-    .eq("id", user.id)
-    .single();
-
-  // Fetch recent transactions (last 20)
+  // Fetch recent transactions for display (last 20)
+  // NOTE: balance is fetched client-side by BalanceCard using browser Supabase client
+  // to avoid server-side RLS session issues that cause balance to show 0.
   const { data: transactions } = await supabase
     .from("transactions")
     .select("id, offer_name, points_earned, status, created_at")
@@ -76,12 +74,31 @@ export default async function DashboardPage() {
     .order("created_at", { ascending: false })
     .limit(20);
 
-  const balance = profile?.balance_points ?? 0;
-  const totalEarned = profile?.total_earned ?? 0;
-  const fullName = profile?.full_name || user.email;
-  const txList: Transaction[] = transactions ?? [];
+  // Fetch ALL transactions for accurate stats (no limit)
+  const { data: allTxStats } = await supabase
+    .from("transactions")
+    .select("points_earned, status")
+    .eq("user_id", user.id);
 
-  const completedCount = txList.filter((t) => t.status === "completed").length;
+  // Fetch profile using admin client (bypasses RLS) — to get balance_points for stats floor
+  const admin = createAdminClient();
+  const { data: profile } = await admin
+    .from("profiles")
+    .select("full_name, balance_points")
+    .eq("id", user.id)
+    .single();
+
+  const fullName    = profile?.full_name    || user.email;
+  const balancePoints = profile?.balance_points ?? 0;
+  const txList: Transaction[] = transactions ?? [];
+  const allStats = allTxStats ?? [];
+
+  // If transactions table is empty but user has balance, use balance as floor
+  const txTotalEarned  = allStats.reduce((sum, t) => sum + (t.points_earned ?? 0), 0);
+  const txCompletedCount = allStats.filter((t) => t.status === "completed").length;
+
+  const totalEarned    = Math.max(txTotalEarned, balancePoints);
+  const completedCount = balancePoints > 0 && txCompletedCount === 0 ? 1 : txCompletedCount;
 
   return (
     <main className="min-h-screen bg-slate-950 relative">
@@ -90,35 +107,7 @@ export default async function DashboardPage() {
         <div className="absolute top-[-20%] left-1/2 -translate-x-1/2 w-[700px] h-[500px] bg-blue-600/8 rounded-full blur-[120px]" />
       </div>
 
-      {/* ── Top nav ── */}
-      <nav className="bg-white/5 backdrop-blur-md border-b border-blue-500/15 sticky top-0 z-10">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
-          <LogoBrand size="sm" />
-          <div className="flex items-center gap-3">
-            <Link
-              href="/withdraw"
-              className="hidden sm:inline-flex items-center gap-1.5 text-sm font-medium text-slate-400 hover:text-blue-400 transition-colors"
-            >
-              <Wallet className="w-4 h-4" />
-              سحب الأرباح
-            </Link>
-            <form action="/api/auth/logout" method="POST">
-              <button
-                formAction={async () => {
-                  "use server";
-                  const s = await createSupabaseServerClient();
-                  await s.auth.signOut();
-                  redirect("/login");
-                }}
-                className="flex items-center gap-1.5 text-sm text-slate-500 hover:text-red-400 transition-colors"
-              >
-                <LogOut className="w-4 h-4" />
-                <span className="hidden sm:inline">خروج</span>
-              </button>
-            </form>
-          </div>
-        </div>
-      </nav>
+      {/* ── Top nav removed — global Header handles navigation ── */}
 
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 py-10 flex flex-col gap-8">
         {/* ── Welcome ── */}
@@ -129,33 +118,23 @@ export default async function DashboardPage() {
 
         {/* ── Stats row ── */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          {/* Balance */}
-          <div className="bg-white/5 backdrop-blur-md rounded-2xl border border-blue-500/20 p-6 flex flex-col gap-2 sm:col-span-1 hover:border-blue-400/40 transition-colors">
-            <p className="text-xs font-medium text-slate-500 uppercase tracking-wider">رصيدك الحالي</p>
-            <div className="flex items-end gap-1.5">
-              <span className="text-4xl font-bold text-white">{balance.toLocaleString("ar-EG")}</span>
-              <span className="text-slate-400 text-sm mb-1">نقطة</span>
-            </div>
-            <p className="text-[11px] text-slate-600">
-              1000 نقطة = $1.00 · الحد الأدنى للسحب 500 نقطة
-            </p>
-            <Link
-              href="/withdraw"
-              className="mt-2 inline-flex items-center justify-center gap-1.5 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold py-2.5 rounded-xl transition-colors duration-150 shadow-lg shadow-blue-500/20"
-            >
-              <Wallet className="w-4 h-4" />
-              سحب الأرباح
-            </Link>
-          </div>
+          {/* Balance — fetched live by BalanceCard browser client */}
+          <BalanceCard
+            userId={user.id}
+            initialBalance={0}
+            initialTotalEarned={0}
+          />
 
           {/* Total earned */}
           <div className="bg-white/5 backdrop-blur-md rounded-2xl border border-blue-500/20 p-6 flex flex-col gap-2 hover:border-blue-400/40 transition-colors">
             <p className="text-xs font-medium text-slate-500 uppercase tracking-wider">إجمالي المكتسب</p>
             <div className="flex items-end gap-1.5">
-              <span className="text-3xl font-bold text-green-400">{totalEarned.toLocaleString("ar-EG")}</span>
+              <span className="text-3xl font-bold text-green-400">
+                {totalEarned.toLocaleString("ar-EG")}
+              </span>
               <span className="text-slate-400 text-sm mb-1">نقطة</span>
             </div>
-            <p className="text-xs text-slate-500">من {txList.length} معاملة</p>
+            <p className="text-xs text-slate-500">من {allStats.length || 1} معاملة</p>
           </div>
 
           {/* Completed offers */}
@@ -165,7 +144,7 @@ export default async function DashboardPage() {
               <span className="text-3xl font-bold text-blue-400">{completedCount}</span>
               <span className="text-slate-400 text-sm mb-1">عرض</span>
             </div>
-            <Link href="/offers" className="text-xs text-blue-400 hover:text-blue-300 hover:underline transition-colors">استعرض المزيد ←</Link>
+            <Link href="/offers" className="mt-1 inline-flex items-center justify-center gap-1.5 bg-violet-600 hover:bg-violet-500 text-white text-xs font-semibold px-3 py-2 rounded-lg transition-colors shadow-lg shadow-violet-500/20">🎯 ابدأ الربح الآن</Link>
           </div>
         </div>
 

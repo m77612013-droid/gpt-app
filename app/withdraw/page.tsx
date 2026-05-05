@@ -74,7 +74,7 @@ const METHODS: Method[] = [
   },
 ];
 
-const MIN_POINTS = 500;
+const MIN_POINTS = 100;
 
 export default function WithdrawPage() {
   const router = useRouter();
@@ -140,21 +140,7 @@ export default function WithdrawPage() {
         <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-blue-900/10 rounded-full blur-[100px]" />
       </div>
 
-      {/* Nav */}
-      <nav className="bg-white/5 backdrop-blur-md border-b border-blue-500/15 sticky top-0 z-10">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
-          <Link href="/" className="font-bold text-white text-base">
-            <LogoBrand size="sm" />
-          </Link>
-          <Link
-            href="/dashboard"
-            className="flex items-center gap-1.5 text-sm text-slate-400 hover:text-blue-400 transition-colors"
-          >
-            <ArrowRight className="w-4 h-4" />
-            لوحة التحكم
-          </Link>
-        </div>
-      </nav>
+      {/* Nav removed — global Header handles navigation */}
 
       <div className="relative z-10 max-w-xl mx-auto px-4 sm:px-6 py-12 flex flex-col gap-6">
 
@@ -170,19 +156,43 @@ export default function WithdrawPage() {
                 <span className="text-slate-500 text-sm">جارٍ التحميل…</span>
               </div>
             ) : (
-              <div className="flex items-end gap-2">
-                <span className="text-4xl font-bold text-white tabular-nums">
-                  {(balance ?? 0).toLocaleString("ar-EG")}
-                </span>
-                <span className="text-blue-300/70 text-sm mb-1">نقطة</span>
-              </div>
+              <>
+                <div className="flex items-end gap-2">
+                  <span className="text-4xl font-bold text-white tabular-nums">
+                    {(balance ?? 0).toLocaleString("ar-EG")}
+                  </span>
+                  <span className="text-blue-300/70 text-sm mb-1">نقطة</span>
+                </div>
+                <p className="text-sm font-semibold text-emerald-400 mt-0.5">
+                  ${((balance ?? 0) / 100).toFixed(2)}
+                </p>
+              </>
             )}
             <p className="text-xs text-slate-500 mt-1">
               الحد الأدنى للسحب: <span className="text-blue-400">{MIN_POINTS} نقطة</span>
             </p>
             <p className="text-xs text-slate-600 mt-0.5">
-              معدل التحويل: <span className="text-slate-500">1000 نقطة = $1.00</span>
+              معدل التحويل: <span className="text-slate-500">100 نقطة = $1.00</span>
             </p>
+
+            {/* ── Progress bar ── */}
+            {!balanceLoading && (
+              <div className="mt-3 w-full flex flex-col gap-1.5">
+                <div className="flex items-center justify-between text-[11px]">
+                  {(balance ?? 0) >= MIN_POINTS
+                    ? <span className="text-emerald-400 font-bold">🎉 يمكنك السحب الآن!</span>
+                    : <span className="text-slate-500">بقي <span className="text-blue-400 font-medium">{MIN_POINTS - (balance ?? 0)}</span> نقطة</span>
+                  }
+                  <span className="text-slate-600">{Math.min(100, Math.round(((balance ?? 0) / MIN_POINTS) * 100))}%</span>
+                </div>
+                <div className="h-2 w-full bg-slate-800 rounded-full overflow-hidden">
+                  <div
+                    className={`h-full rounded-full transition-all duration-700 ${(balance ?? 0) >= MIN_POINTS ? "bg-emerald-500" : "bg-blue-500"}`}
+                    style={{ width: `${Math.min(100, ((balance ?? 0) / MIN_POINTS) * 100)}%` }}
+                  />
+                </div>
+              </div>
+            )}
           </div>
           <div className="relative w-14 h-14 rounded-2xl bg-blue-500/15 border border-blue-500/25 flex items-center justify-center shrink-0 shadow-lg shadow-blue-500/10">
             <Coins className="w-6 h-6 text-blue-400" strokeWidth={1.5} />

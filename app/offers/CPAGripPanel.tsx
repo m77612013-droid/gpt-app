@@ -9,9 +9,11 @@ interface Props {
 }
 
 export default function CPAGripPanel({ userId }: Props) {
-  // Append user_id so CPAGrip postback knows who to credit
+  // sub1 is the CPAGrip variable that gets sent back in the postback as {sub1}
+  // The postback URL is configured as: /api/postback?user_id={sub1}&...
+  // Without sub1 here, CPAGrip sends an empty user_id and no points are credited
   const offersUrl = userId
-    ? `${BASE_OFFERS_URL}?u=${encodeURIComponent(userId)}`
+    ? `${BASE_OFFERS_URL}?sub1=${encodeURIComponent(userId)}`
     : BASE_OFFERS_URL;
 
   return (

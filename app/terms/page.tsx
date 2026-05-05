@@ -1,18 +1,10 @@
 import Link from "next/link";
-import LogoBrand from "@/app/components/LogoBrand";
 
 export const metadata = { title: "شروط الاستخدام | جنى" };
 
 export default function TermsPage() {
   return (
     <main className="min-h-screen bg-slate-950 text-white">
-      {/* Nav */}
-      <nav className="bg-white/[0.04] backdrop-blur-md border-b border-white/[0.07] sticky top-0 z-20">
-        <div className="max-w-3xl mx-auto px-4 h-14 flex items-center justify-between">
-          <Link href="/"><LogoBrand size="sm" /></Link>
-          <Link href="/" className="text-sm text-slate-400 hover:text-white transition-colors">← الرئيسية</Link>
-        </div>
-      </nav>
 
       <div className="max-w-3xl mx-auto px-4 py-14 prose prose-invert prose-sm sm:prose-base leading-loose">
         <h1 className="text-2xl font-bold mb-2">شروط الاستخدام</h1>
@@ -38,9 +30,20 @@ export default function TermsPage() {
         <Section title="4. كسب النقاط وصرفها">
           <ul className="list-disc list-inside space-y-1">
             <li>يتم إضافة النقاط فقط بعد التحقق من إتمام العرض من قِبَل المورد الخارجي.</li>
-            <li>الحد الأدنى للسحب هو <strong>500 نقطة</strong>.</li>
+            <li>الحد الأدنى للسحب هو <strong>100 نقطة</strong>.</li>
+            <li>معدل التحويل: <strong>100 نقطة = 1.00 دولار أمريكي</strong>.</li>
             <li>يحق لنا رفض طلبات السحب المشبوهة أو التي تنتهك هذه الشروط.</li>
             <li>النقاط غير قابلة للتحويل بين الحسابات.</li>
+            <li>يتم معالجة طلبات السحب خلال فترة تتراوح بين 24 و 72 ساعة من تقديم الطلب.</li>
+          </ul>
+        </Section>
+
+        <Section title="4أ. سياسة الدفع والشبكات الإعلانية">
+          <p>تعتمد منصة جنى على شبكات إعلانية خارجية بما فيها: Monlix, CPALead, AdGate Media, Lootably, AdscendMedia, CPAGrip وغيرها. عند بدء التفاعل مع عرض ما:</p>
+          <ul className="list-disc list-inside space-y-1 mt-2">
+            <li>قد يتم مشاركة معرفك الفريد (Sub-ID) مع الشبكة لوحدها دون أي معلومات شخصية أخرى.</li>
+            <li>تخضع العروض لشروط استخدام كل شبكة على حدة.</li>
+            <li>جنى غير مسؤولة عن أسعار العروض أو توفرها من قبل شبكات خارجية.</li>
           </ul>
         </Section>
 

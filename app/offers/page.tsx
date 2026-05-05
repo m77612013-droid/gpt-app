@@ -12,7 +12,7 @@ export default async function OffersPage() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) redirect("/login");
+  if (!user) redirect("/login?redirect=/offers");
 
   // Read offerwall IDs from DB (admin-managed), fall back to env vars
   const s = await getOfferwallSettings().catch(() => null);
@@ -42,21 +42,6 @@ export default async function OffersPage() {
         <div className="absolute top-[30%] right-[-10%] w-[400px] h-[400px] bg-blue-600/6 rounded-full blur-[120px]" />
         <div className="absolute bottom-[-10%] left-[50%] w-[500px] h-[350px] bg-emerald-600/5 rounded-full blur-[130px]" />
       </div>
-
-      {/* شريط التنقل */}
-      <nav className="bg-white/[0.04] backdrop-blur-md border-b border-white/[0.07] sticky top-0 z-20">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
-          <Link href="/" className="font-bold text-white text-base">
-            <LogoBrand size="sm" />
-          </Link>
-          <Link
-            href="/dashboard"
-            className="text-sm text-slate-400 hover:text-blue-400 transition-colors"
-          >
-            {"← لوحة التحكم"}
-          </Link>
-        </div>
-      </nav>
 
       {/* المحتوى */}
       <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 py-10 flex flex-col gap-8">

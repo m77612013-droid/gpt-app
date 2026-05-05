@@ -161,7 +161,7 @@ export default function OffersClient({
   return (
     <>
       {/* ── Cards grid ─────────────────────────────────────────────────────── */}
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
         {OFFERS.map((offer) => (
           <OfferCard
             key={offer.id}
@@ -179,20 +179,20 @@ export default function OffersClient({
       {/* ── Modal ──────────────────────────────────────────────────────────── */}
       {activeOffer && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6"
+          className="fixed inset-0 z-50 flex items-end sm:items-center justify-center sm:p-6"
           onClick={handleClose}
         >
           {/* Backdrop blur */}
           <div className="absolute inset-0 bg-black/75 backdrop-blur-sm" />
 
-          {/* Panel */}
+          {/* Panel — full screen on mobile, modal on desktop */}
           <div
-            className={`relative z-10 w-full max-w-4xl h-[85vh] flex flex-col rounded-2xl overflow-hidden border bg-gradient-to-br ${activeOffer.gradient} shadow-2xl`}
+            className={`relative z-10 w-full sm:max-w-4xl h-[92vh] sm:h-[85vh] flex flex-col rounded-t-2xl sm:rounded-2xl overflow-hidden border bg-gradient-to-br ${activeOffer.gradient} shadow-2xl`}
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal header */}
-            <div className="flex items-center gap-3 px-4 py-3 bg-slate-950/80 border-b border-white/10 flex-shrink-0">
-              <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${activeOffer.iconGlow}`}>
+            <div className="flex items-center gap-3 px-4 py-3.5 bg-slate-950/80 border-b border-white/10 flex-shrink-0">
+              <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${activeOffer.iconGlow}`}>
                 <activeOffer.icon className={`w-4 h-4 ${activeOffer.iconColor}`} strokeWidth={2} />
               </div>
               <div className="flex-1 min-w-0">
@@ -207,9 +207,9 @@ export default function OffersClient({
                 <button
                   onClick={handleReload}
                   title="إعادة التحميل"
-                  className="w-8 h-8 flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 rounded-lg transition-all"
+                  className="w-10 h-10 sm:w-8 sm:h-8 flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 rounded-lg transition-all"
                 >
-                  <RefreshCw className="w-3.5 h-3.5" />
+                  <RefreshCw className="w-4 h-4" />
                 </button>
                 <a
                   href={
@@ -220,14 +220,14 @@ export default function OffersClient({
                   target="_blank"
                   rel="noopener noreferrer"
                   title="فتح في نافذة جديدة"
-                  className="w-8 h-8 flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 rounded-lg transition-all"
+                  className="w-10 h-10 sm:w-8 sm:h-8 flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 rounded-lg transition-all"
                 >
-                  <ExternalLink className="w-3.5 h-3.5" />
+                  <ExternalLink className="w-4 h-4" />
                 </a>
                 <button
                   onClick={handleClose}
                   title="إغلاق"
-                  className="w-8 h-8 flex items-center justify-center text-slate-400 hover:text-white hover:bg-red-500/20 rounded-lg transition-all"
+                  className="w-10 h-10 sm:w-8 sm:h-8 flex items-center justify-center text-slate-400 hover:text-white hover:bg-red-500/20 rounded-lg transition-all"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -278,9 +278,9 @@ function OfferCard({ offer, onOpen }: { offer: Offer; onOpen: () => void }) {
 
   return (
     <div
-      className={`group relative bg-gradient-to-br ${offer.gradient} backdrop-blur-md border rounded-2xl p-5 flex flex-col gap-4 transition-all duration-300 overflow-hidden
+      className={`group relative bg-gradient-to-br ${offer.gradient} backdrop-blur-md border rounded-2xl p-5 flex flex-col gap-4 transition-all duration-300 overflow-hidden min-h-[180px] sm:min-h-0
         ${isReady
-          ? "cursor-pointer hover:-translate-y-1.5 hover:shadow-2xl"
+          ? "cursor-pointer hover:-translate-y-1.5 hover:shadow-2xl active:scale-[0.98]"
           : "opacity-50 cursor-not-allowed"
         }`}
       onClick={isReady ? onOpen : undefined}
@@ -325,7 +325,7 @@ function OfferCard({ offer, onOpen }: { offer: Offer; onOpen: () => void }) {
         </span>
         {isReady ? (
           <span
-            className={`text-sm font-bold ${offer.iconColor} group-hover:gap-2 flex items-center gap-1 transition-all duration-200`}
+            className={`text-sm font-bold ${offer.iconColor} group-hover:gap-2 flex items-center gap-1 transition-all duration-200 sm:bg-transparent bg-white/10 sm:px-0 px-3 py-2 rounded-xl sm:rounded-none sm:py-0`}
           >
             ابدأ الربح الآن
             <span className="inline-block group-hover:translate-x-1 transition-transform duration-200">←</span>
