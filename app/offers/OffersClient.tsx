@@ -54,23 +54,13 @@ const BADGE_ICONS: Record<BadgeType, React.ReactNode> = {
 
 // ── Props from server ────────────────────────────────────────────────────────
 interface Props {
-  userId:           string;
-  monlixUrl:        string;
-  cpalUrl:          string;
-  adgateUrl:        string;
-  lootablyUrl:      string;
-  adscendUrl:       string;
-  cpagripScriptId:  string;
-  adgemUrl:         string;
+  userId:          string;
+  cpagripScriptId: string;
+  adgemUrl:        string;
 }
 
 export default function OffersClient({
   userId,
-  monlixUrl,
-  cpalUrl,
-  adgateUrl,
-  lootablyUrl,
-  adscendUrl,
   cpagripScriptId,
   adgemUrl,
 }: Props) {

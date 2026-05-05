@@ -1,10 +1,12 @@
 ﻿import { redirect } from "next/navigation";
-import Link from "next/link";
 import { TrendingUp, Shield } from "lucide-react";
 import { createSupabaseServerClient } from "@/lib/supabase-server";
 import { getOfferwallSettings } from "@/app/admin/actions";
 import OffersClient from "./OffersClient";
-import LogoBrand from "@/app/components/LogoBrand";
+
+// Force server-render on every request — no static/ISR cache
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export default async function OffersPage() {
   const supabase = await createSupabaseServerClient();
@@ -14,28 +16,13 @@ export default async function OffersPage() {
 
   if (!user) redirect("/login?redirect=/offers");
 
-  // Read offerwall IDs from DB (admin-managed), fall back to env vars
   const s = await getOfferwallSettings().catch(() => null);
 
-  const monlixId    = s?.monlix_app_id         || process.env.NEXT_PUBLIC_MONLIX_APP_ID    || "";
-  const cpalId      = s?.cpalead_app_id         || process.env.NEXT_PUBLIC_CPALEAD_APP_ID   || "";
-  const adgateId    = s?.adgate_app_id          || process.env.NEXT_PUBLIC_ADGATE_APP_ID    || "";
-  const lootablyId  = s?.lootably_placement_id  || process.env.NEXT_PUBLIC_LOOTABLY_PID     || "";
-  const adscendId   = s?.adscend_app_id         || process.env.NEXT_PUBLIC_ADSCEND_APP_ID   || "";
-  const cpagripId   = s?.cpagrip_app_id         || process.env.NEXT_PUBLIC_CPAGRIP_APP_ID   || "";
-  const adgemId     = s?.adgem_app_id           || process.env.NEXT_PUBLIC_ADGEM_APP_ID     || "32530";
+  const cpagripId   = s?.cpagrip_app_id || process.env.NEXT_PUBLIC_CPAGRIP_APP_ID  || "";
+  const adgemId     = s?.adgem_app_id   || process.env.NEXT_PUBLIC_ADGEM_APP_ID    || "32530";
 
-  const userId = user.id;
-
-  const monlixUrl   = monlixId   ? `https://offers.monlix.com/?app=${monlixId}&user=${encodeURIComponent(userId)}` : "";
-  const cpalUrl     = cpalId     ? `https://cpalead.com/dashboard/reports/campaign_iframe.php?id=${cpalId}&subid=${encodeURIComponent(userId)}` : "";
-  const adgateUrl   = adgateId   ? `https://wall.adgaterewards.com/${adgateId}/?uid=${encodeURIComponent(userId)}` : "";
-  const lootablyUrl = lootablyId ? `https://wall.lootably.com/?placementID=${lootablyId}&uid=${encodeURIComponent(userId)}` : "";
-  const adscendUrl  = adscendId  ? `https://offerwall.adscendmedia.com/offers.php?app_id=${adscendId}&sub_id=${encodeURIComponent(userId)}` : "";
-  // CPAGrip uses a JS script tag (not an iframe) — we pass the raw ID + userId to CPAGripPanel
-  const cpagripScriptId = cpagripId; // e.g. "1893275"
-  // AdGem offerwall iframe
-  const adgemUrl    = adgemId    ? `https://wall.adgem.com/?appid=${adgemId}&playerid=${encodeURIComponent(userId)}` : "";
+  const userId      = user.id;
+  const adgemUrl    = `https://wall.adgem.com/?appid=${adgemId}&playerid=${encodeURIComponent(userId)}`;
 
   return (
     <main className="min-h-screen bg-slate-950 relative">
@@ -68,12 +55,12 @@ export default async function OffersPage() {
           </div>
         </div>
 
-        {/* شريط الاحصاءات */}
+        {/* Stats bar */}
         <div className="grid grid-cols-3 gap-3 sm:gap-4">
           {[
-            { label: "شبكات اعلانية", value: "6+" },
-            { label: "اقصى مكافاة",   value: "500 نقطة" },
-            { label: "وقت الاضافة",   value: "فورا" },
+            { label: "شبكات اعلانية", value: "2"         },
+            { label: "اقصى مكافاة",   value: "600 نقطة" },
+            { label: "وقت الاضافة",   value: "فورا"      },
           ].map(({ label, value }) => (
             <div
               key={label}
@@ -88,12 +75,7 @@ export default async function OffersPage() {
         {/* مكون العميل - البطاقات والنافذة المنبثقة */}
         <OffersClient
           userId={userId}
-          monlixUrl={monlixUrl}
-          cpalUrl={cpalUrl}
-          adgateUrl={adgateUrl}
-          lootablyUrl={lootablyUrl}
-          adscendUrl={adscendUrl}
-          cpagripScriptId={cpagripScriptId}
+          cpagripScriptId={cpagripId}
           adgemUrl={adgemUrl}
         />
       </div>
