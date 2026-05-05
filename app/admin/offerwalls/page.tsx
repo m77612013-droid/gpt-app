@@ -97,7 +97,7 @@ const SECTIONS = [
 const EMPTY: OfferwallSettings = {
   monlix_app_id: "", monlix_secret_key: "", revlum_api_key: "",
   lootably_placement_id: "", cpalead_app_id: "", adgate_app_id: "", adscend_app_id: "",
-  cpagrip_app_id: "",
+  cpagrip_app_id: "", adgem_app_id: "",
 };
 
 export default function OfferwallsSettingsPage() {

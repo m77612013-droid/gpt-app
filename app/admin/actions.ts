@@ -34,6 +34,7 @@ export interface OfferwallSettings {
   adgate_app_id:         string;
   adscend_app_id:        string;
   cpagrip_app_id:        string;
+  adgem_app_id:          string;
 }
 
 const OFFERWALL_KEYS: (keyof OfferwallSettings)[] = [
@@ -45,6 +46,7 @@ const OFFERWALL_KEYS: (keyof OfferwallSettings)[] = [
   "adgate_app_id",
   "adscend_app_id",
   "cpagrip_app_id",
+  "adgem_app_id",
 ];
 
 export async function getOfferwallSettings(): Promise<OfferwallSettings> {
@@ -73,6 +75,7 @@ export async function getOfferwallSettings(): Promise<OfferwallSettings> {
       adgate_app_id:         map["adgate_app_id"]         ?? "",
       adscend_app_id:        map["adscend_app_id"]        ?? "",
       cpagrip_app_id:        map["cpagrip_app_id"]        ?? "",
+      adgem_app_id:          map["adgem_app_id"]          ?? "",
     };
   } catch (e) {
     console.error("[getOfferwallSettings] unexpected error:", e);
@@ -83,7 +86,7 @@ export async function getOfferwallSettings(): Promise<OfferwallSettings> {
 const EMPTY_SETTINGS: OfferwallSettings = {
   monlix_app_id: "", monlix_secret_key: "", revlum_api_key: "",
   lootably_placement_id: "", cpalead_app_id: "", adgate_app_id: "", adscend_app_id: "",
-  cpagrip_app_id: "",
+  cpagrip_app_id: "", adgem_app_id: "",
 };
 
 export type SaveResult = { ok: true } | { ok: false; message: string };
