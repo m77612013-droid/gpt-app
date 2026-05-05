@@ -60,6 +60,7 @@ interface Props {
   lootablyUrl:      string;
   adscendUrl:       string;
   cpagripScriptId:  string;
+  adgemUrl:         string;
 }
 
 export default function OffersClient({
@@ -70,6 +71,7 @@ export default function OffersClient({
   lootablyUrl,
   adscendUrl,
   cpagripScriptId,
+  adgemUrl,
 }: Props) {
   const [activeOffer, setActiveOffer] = useState<Offer | null>(null);
   const [iframeKey,   setIframeKey]   = useState(0); // used to force reload
@@ -152,6 +154,19 @@ export default function OffersClient({
       badge: { label: "الأعلى ربحاً", type: "highpaying" },
       iframeUrl: "",          // not used — CPAGrip uses script injection
       scriptId:  cpagripScriptId,
+    },
+    {
+      id: "adgem",
+      provider: "AdGem",
+      title: "عروض AdGem المتنوعة",
+      desc: "أكمل عروضاً وتطبيقات واستطلاعات من شبكة AdGem واحصل على نقاطك فوراً بعد التحقق.",
+      icon: Zap,
+      gradient: "from-cyan-500/30 to-teal-500/10 border-cyan-500/40",
+      iconGlow:  "bg-cyan-500/20",
+      iconColor: "text-cyan-300",
+      maxPoints: "حتى 400 نقطة",
+      badge: { label: "جديد", type: "new" },
+      iframeUrl: adgemUrl,
     },
   ];
 

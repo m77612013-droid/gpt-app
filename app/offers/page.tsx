@@ -23,6 +23,7 @@ export default async function OffersPage() {
   const lootablyId  = s?.lootably_placement_id  || process.env.NEXT_PUBLIC_LOOTABLY_PID     || "";
   const adscendId   = s?.adscend_app_id         || process.env.NEXT_PUBLIC_ADSCEND_APP_ID   || "";
   const cpagripId   = s?.cpagrip_app_id         || process.env.NEXT_PUBLIC_CPAGRIP_APP_ID   || "";
+  const adgemId     = s?.adgem_app_id           || process.env.NEXT_PUBLIC_ADGEM_APP_ID     || "32530";
 
   const userId = user.id;
 
@@ -33,6 +34,8 @@ export default async function OffersPage() {
   const adscendUrl  = adscendId  ? `https://offerwall.adscendmedia.com/offers.php?app_id=${adscendId}&sub_id=${encodeURIComponent(userId)}` : "";
   // CPAGrip uses a JS script tag (not an iframe) — we pass the raw ID + userId to CPAGripPanel
   const cpagripScriptId = cpagripId; // e.g. "1893275"
+  // AdGem offerwall iframe
+  const adgemUrl    = adgemId    ? `https://wall.adgem.com/?appid=${adgemId}&playerid=${encodeURIComponent(userId)}` : "";
 
   return (
     <main className="min-h-screen bg-slate-950 relative">
@@ -91,6 +94,7 @@ export default async function OffersPage() {
           lootablyUrl={lootablyUrl}
           adscendUrl={adscendUrl}
           cpagripScriptId={cpagripScriptId}
+          adgemUrl={adgemUrl}
         />
       </div>
     </main>
