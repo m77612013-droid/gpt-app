@@ -32,11 +32,11 @@ const nextConfig = {
             value: [
               "default-src 'self'",
               "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://singingfiles.com https://*.cpagrip.com",
-              "frame-src 'self' https://singingfiles.com https://*.cpagrip.com https://*.monlix.com https://cpalead.com https://*.adgaterewards.com https://wall.lootably.com https://*.adscendmedia.com",
+              "frame-src 'self' https://gemiwall.com https://*.gemiwall.com https://singingfiles.com https://*.cpagrip.com https://*.monlix.com https://cpalead.com https://*.adgaterewards.com https://wall.lootably.com https://*.adscendmedia.com",
               "img-src 'self' data: blob: https:",
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
               "font-src 'self' https://fonts.gstatic.com",
-              "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://singingfiles.com https://*.cpagrip.com",
+              "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://gemiwall.com https://*.gemiwall.com https://singingfiles.com https://*.cpagrip.com",
             ].join("; "),
           },
           // Allow CPAGrip to embed in our page (X-Frame-Options)
