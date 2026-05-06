@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ExternalLink, Sparkles, ChevronRight, Gift, Zap, CheckCircle2 } from "lucide-react";
+import { ExternalLink, Sparkles, ChevronRight, Gift, Zap, CheckCircle2, AlertTriangle } from "lucide-react";
 
 interface Props {
   userId: string;
@@ -12,9 +12,16 @@ const PLACEMENT_ID = "597079498228802fb9ffeb7f";
 export default function GemiWallEmbed({ userId }: Props) {
   const [clicked, setClicked] = useState(false);
 
-  const wallUrl = `https://gemiwall.com/?placementid=${PLACEMENT_ID}&userid=${encodeURIComponent(userId)}`;
+  // Guard: userId must be a non-empty string before we build the URL
+  const safeUserId = userId && userId.trim().length > 0 ? userId.trim() : null;
+
+  // sub_id echoes the userId back so GemiWall can pass it in the postback
+  const wallUrl = safeUserId
+    ? `https://gemiwall.com/?placementid=${PLACEMENT_ID}&userid=${encodeURIComponent(safeUserId)}&sub_id=${encodeURIComponent(safeUserId)}`
+    : null;
 
   function openWall() {
+    if (!wallUrl) return;
     window.open(wallUrl, "_blank", "noreferrer,noopener");
     setClicked(true);
   }
@@ -58,14 +65,21 @@ export default function GemiWallEmbed({ userId }: Props) {
             ))}
           </div>
 
-          <button
-            onClick={openWall}
-            className="group relative inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 active:scale-95 text-white font-semibold text-base sm:text-lg shadow-xl shadow-violet-500/25 border border-violet-400/20 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 focus:ring-offset-slate-900"
-          >
-            <ExternalLink className="w-5 h-5 opacity-80 group-hover:opacity-100 transition-opacity" />
-            افتح مركز العروض
-            <ChevronRight className="w-4 h-4 opacity-60 group-hover:translate-x-0.5 transition-transform" />
-          </button>
+          {!safeUserId ? (
+            <div className="flex items-center gap-2 px-5 py-3 rounded-xl bg-red-500/10 border border-red-500/25 text-red-400 text-sm">
+              <AlertTriangle className="w-4 h-4 shrink-0" />
+              تعذّر تحميل بيانات المستخدم. يُرجى تسجيل الخروج وإعادة الدخول.
+            </div>
+          ) : (
+            <button
+              onClick={openWall}
+              className="group relative inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 active:scale-95 text-white font-semibold text-base sm:text-lg shadow-xl shadow-violet-500/25 border border-violet-400/20 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 focus:ring-offset-slate-900"
+            >
+              <ExternalLink className="w-5 h-5 opacity-80 group-hover:opacity-100 transition-opacity" />
+              افتح مركز العروض
+              <ChevronRight className="w-4 h-4 opacity-60 group-hover:translate-x-0.5 transition-transform" />
+            </button>
+          )}
 
           {clicked && (
             <p className="flex items-center gap-2 text-sm text-emerald-400">
