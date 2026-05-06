@@ -10,7 +10,7 @@ interface Props {
 // TimeBucks publisher link (refID=228784611).
 // When you obtain the dedicated offerwall publisher URL from your TimeBucks
 // dashboard (Offerwalls → Get Code), replace this constant with that URL.
-const TIMEBUCKS_BASE_URL = "https://timebucks.com/?refID=228784611";
+const TIMEBUCKS_BASE_URL = "https://timebucks.com/publishers/index.php?pg=earn&tab=offerwalls&refID=228784611";
 
 export default function GemiWallEmbed({ userId }: Props) {
   const [clicked, setClicked] = useState(false);
