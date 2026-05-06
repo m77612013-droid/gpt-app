@@ -16,6 +16,7 @@ import {
   UserPlus,
   Menu,
   X,
+  Coins,
 } from "lucide-react";
 
 interface NavLink {
@@ -27,10 +28,11 @@ interface NavLink {
 }
 
 const NAV_LINKS: NavLink[] = [
-  { href: "/",          label: "الرئيسية",     icon: <Home className="w-4 h-4" /> },
-  { href: "/offers",    label: "العروض",        icon: <Gift className="w-4 h-4" />, authRequired: true },
+  { href: "/",          label: "الرئيسية",     icon: <Home          className="w-4 h-4" /> },
+  { href: "/earn",      label: "مركز الكسب",   icon: <Coins         className="w-4 h-4" />, authRequired: true },
+  { href: "/offers",    label: "العروض",        icon: <Gift          className="w-4 h-4" />, authRequired: true },
   { href: "/dashboard", label: "لوحة التحكم",  icon: <LayoutDashboard className="w-4 h-4" />, authRequired: true },
-  { href: "/withdraw",  label: "سحب الأرباح",  icon: <Wallet className="w-4 h-4" />, authRequired: true },
+  { href: "/withdraw",  label: "سحب الأرباح",  icon: <Wallet        className="w-4 h-4" />, authRequired: true },
 ];
 
 export default function Header() {

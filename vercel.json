@@ -5,7 +5,17 @@
   "installCommand": "npm install",
   "devCommand": "next dev",
   "functions": {
-    "app/api/postback/route.ts": { "maxDuration": 10 },
-    "app/api/postback/monlix/route.ts": { "maxDuration": 10 }
-  }
+    "app/api/postback/route.ts":           { "maxDuration": 10 },
+    "app/api/postback/monlix/route.ts":    { "maxDuration": 10 },
+    "app/api/adgem-callback/route.ts":     { "maxDuration": 10 },
+    "app/api/timewall-callback/route.ts":  { "maxDuration": 10 },
+    "app/api/redirect/route.ts":           { "maxDuration": 10 },
+    "app/api/adgem-sync/route.ts":         { "maxDuration": 60 }
+  },
+  "crons": [
+    {
+      "path": "/api/adgem-sync",
+      "schedule": "0 * * * *"
+    }
+  ]
 }
