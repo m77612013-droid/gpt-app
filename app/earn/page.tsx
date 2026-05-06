@@ -14,7 +14,7 @@ export default async function EarnPage() {
   // Redirect unauthenticated visitors to login, then back here
   if (!user) redirect("/login?redirect=/earn");
 
-  const iframeSrc = `https://gemiwall.com/?placementid=597079498228802fb9ffeb7f&userid=${encodeURIComponent(user.id)}`;
+  const userId = user.id;
 
   return (
     <main className="min-h-screen bg-slate-950 relative">
@@ -60,8 +60,8 @@ export default async function EarnPage() {
           ))}
         </div>
 
-        {/* ── GemiWall iframe (client component) ─────────────────────── */}
-        <GemiWallEmbed src={iframeSrc} />
+        {/* ── GemiWall launcher (client component) ───────────────────── */}
+        <GemiWallEmbed userId={userId} />
 
       </div>
     </main>
