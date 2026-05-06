@@ -7,7 +7,10 @@ interface Props {
   userId: string;
 }
 
-const PLACEMENT_ID = "597079498228802fb9ffeb7f";
+// TimeBucks publisher link (refID=228784611).
+// When you obtain the dedicated offerwall publisher URL from your TimeBucks
+// dashboard (Offerwalls → Get Code), replace this constant with that URL.
+const TIMEBUCKS_BASE_URL = "https://timebucks.com/?refID=228784611";
 
 export default function GemiWallEmbed({ userId }: Props) {
   const [clicked, setClicked] = useState(false);
@@ -15,9 +18,9 @@ export default function GemiWallEmbed({ userId }: Props) {
   // Guard: userId must be a non-empty string before we build the URL
   const safeUserId = userId && userId.trim().length > 0 ? userId.trim() : null;
 
-  // sub_id echoes the userId back so GemiWall can pass it in the postback
+  // Append sub_id so TimeBucks can echo the user back in postback callbacks
   const wallUrl = safeUserId
-    ? `https://gemiwall.com/?placementid=${PLACEMENT_ID}&userid=${encodeURIComponent(safeUserId)}&sub_id=${encodeURIComponent(safeUserId)}`
+    ? `${TIMEBUCKS_BASE_URL}&sub_id=${encodeURIComponent(safeUserId)}`
     : null;
 
   function openWall() {
